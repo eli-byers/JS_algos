@@ -149,5 +149,26 @@ function swapTwoVals(arr){
 	arr[arr.length-1] = temp;
 	return arr;
 }
-var x = [2, 3, 5, 7, 6];
-console.log(swapTwoVals(x));
+// var x = [2, 3, 5, 7, 6];
+// console.log(swapTwoVals(x));
+
+function reverseArray(arr){
+	for (i = 0; i < Math.floor(arr.length/2); i++){
+		var temp = arr[i];
+		arr[i] = arr[arr.length-1-i];
+		arr[arr.length-1-i] = temp;
+	}
+	return arr;
+}
+// var x = [-3,5,1,3,2,10];
+// console.log(reverseArray(x));
+
+function insertXInY(arr, x, y){
+	for (i = arr.length; i > y; i--){
+		arr[i] = arr[i-1];
+	}
+	arr[y] = x;
+	return arr;
+}
+var x = [1, 3, 5, 7];
+console.log(insertXInY(x, 10, 2));
