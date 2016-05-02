@@ -110,5 +110,26 @@ function minMaxAvg(arr){
 	}
 	console.log("min:",min," max:",max," avg:",avg);
 }
-var x = [1,5, 10, -2];
-minMaxAvg(x);
+// var x = [1,5, 10, -2];
+// minMaxAvg(x);
+
+function shiftByOne(arr){
+	for (i = 0; i < arr.length-1; i++){
+		arr[i] = arr[i+1];
+	}
+	arr[arr.length-1] = 0;
+	return arr;
+}
+// var x = [1,5, 10, 7, -2];
+// console.log(shiftByOne(x));
+
+function numberToString(arr){
+	for (i in arr){
+		if (arr[i] < 0){
+			arr[i] = "Dojo";
+		}
+	}
+	return arr;
+}
+var x = [-1, -3, 2];
+console.log(numberToString(x));
