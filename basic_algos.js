@@ -66,7 +66,7 @@ function oddsArray(n){
 }
 // oddsArray(255);
 
-function greaterThenY(arr, y){
+function greaterThanY(arr, y){
 	var count = 0;
 	for (i in arr){
 		if (arr[i] > y){
@@ -84,5 +84,31 @@ function squareTheValues(arr){
 	}
 	return arr;
 }
+// var x = [1,5, 10, -2];
+// console.log(squareTheValues(x));
+
+function eliminateNegatives(arr){
+	for (i in arr){
+		if (arr[i] < 0){
+			arr[i] = 0;
+		}
+	}
+	return arr;
+}
+// var x = [1,5, 10, -2];
+// console.log(eliminateNegatives(x));
+
+function minMaxAvg(arr){
+	var min = max = avg = arr[0];
+	for (i = 1; i < arr.length; i++){
+		if (arr[i] > max){
+			max = arr[i];
+		} else if (arr[i] < min){
+			min = arr[i];
+		}
+		avg += i;
+	}
+	console.log("min:",min," max:",max," avg:",avg);
+}
 var x = [1,5, 10, -2];
-console.log(squareTheValues(x));
+minMaxAvg(x);
