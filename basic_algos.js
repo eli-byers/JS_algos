@@ -131,5 +131,23 @@ function numberToString(arr){
 	}
 	return arr;
 }
-var x = [-1, -3, 2];
-console.log(numberToString(x));
+// var x = [-1, -3, 2];
+// console.log(numberToString(x));
+
+function randArray(){
+	var arr = [];
+	for (i = 0; i < 10; i++){
+		arr.push(Math.floor(Math.random() * 100))
+	}
+	return arr;
+}
+// console.log(randArray());
+
+function swapTwoVals(arr){
+	var temp = arr[0];
+	arr[0] = arr[arr.length-1];
+	arr[arr.length-1] = temp;
+	return arr;
+}
+var x = [2, 3, 5, 7, 6];
+console.log(swapTwoVals(x));
