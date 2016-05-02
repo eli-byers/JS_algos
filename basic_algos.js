@@ -170,5 +170,21 @@ function insertXInY(arr, x, y){
 	arr[y] = x;
 	return arr;
 }
-var x = [1, 3, 5, 7];
-console.log(insertXInY(x, 10, 2));
+// var x = [1, 3, 5, 7];
+// console.log(insertXInY(x, 10, 2));
+
+function removeNegatives(arr){
+	var x = -1;
+	for (i = 0; i < arr.length; i++){
+		if (arr[i] >= 0){
+			x++;
+			if (x != i){
+				arr[x] = arr[i];
+			}
+		}
+	}
+	arr = arr.splice(0, x+1);
+	return arr;
+}
+var x = [0, -1, 2, -3, 4, -5, 6];
+console.log(removeNegatives(x));
