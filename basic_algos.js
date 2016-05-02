@@ -64,5 +64,25 @@ function oddsArray(n){
 	}
 	console.log(arr);
 }
+// oddsArray(255);
 
-oddsArray(255);
+function greaterThenY(arr, y){
+	var count = 0;
+	for (i in arr){
+		if (arr[i] > y){
+			count++;
+		}
+	}
+	console.log(count);
+}
+// var x = [1,3, 5, 7];
+// greaterThenY(x, 3);
+
+function squareTheValues(arr){
+	for (i in arr){
+		arr[i] *= arr[i];
+	}
+	return arr;
+}
+var x = [1,5, 10, -2];
+console.log(squareTheValues(x));
