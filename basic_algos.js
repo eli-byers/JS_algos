@@ -16,7 +16,7 @@ function printOdds(){
 }
 // printOdds()
 
-// print the sum of 1-5000
+// print the sum of all odd numbers from 1-5000
 function sum(){
 	var sum = 0;
 	for (i = 1; i <= 5000; i++){
@@ -218,3 +218,13 @@ function linearSearch(arr, x){
 }
 // var x = [24, 8, 23, 3];
 // console.log(linearSearch(x, 8));
+
+// find sum of all numbers from n to 1
+function iSum(n){
+	var sum = 0;
+	for (i = 1; i <= n; i++){
+		sum += i;
+	}
+	return sum;
+}
+// console.log(iSum(5));
