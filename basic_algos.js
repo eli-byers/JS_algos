@@ -227,4 +227,4 @@ function iSum(n){
 	}
 	return sum;
 }
-// console.log(iSum(5));
+console.log(iSum(5));
