@@ -23,7 +23,7 @@ function MergeSortArr(arr){
 	}
 	var mid = Math.floor(arr.length/2);
 	var right = arr.slice(mid,arr.length);
-	var arr = arr.slice(0, mid);
+	arr = arr.slice(0, mid);
 
 	arr = MergeSortArr(arr);
 	right = MergeSortArr(right);

@@ -1,7 +1,7 @@
 // print all numbers from 1-255
 function print255(){
 	for (i = 1; i <= 1000; i++){
-		console.log(i)
+		console.log(i);
 	}
 }
 // print255();
@@ -30,7 +30,7 @@ function sum(){
 
 // print all elements in an array
 function iterateThroughArray(arr){
-	for (i in arr){
+	for (var i in arr){
 		console.log(arr[i]);
 	}
 }
@@ -76,7 +76,7 @@ function oddsArray(n){
 // print the number of values in array greater than y
 function greaterThanY(arr, y){
 	var count = 0;
-	for (i in arr){
+	for (var i in arr){
 		if (arr[i] > y){
 			count++;
 		}
@@ -88,7 +88,7 @@ function greaterThanY(arr, y){
 
 // return array of all values in input array squared
 function squareTheValues(arr){
-	for (i in arr){
+	for (var i in arr){
 		arr[i] *= arr[i];
 	}
 	return arr;
@@ -98,7 +98,7 @@ function squareTheValues(arr){
 
 // return array whith all negative numbers in input array set to 0
 function eliminateNegatives(arr){
-	for (i in arr){
+	for (var i in arr){
 		if (arr[i] < 0){
 			arr[i] = 0;
 		}
@@ -110,7 +110,7 @@ function eliminateNegatives(arr){
 
 // print min, max, and avgerage of input array
 function minMaxAvg(arr){
-	var min = max = avg = arr[0];
+	var min = arr[0], max = arr[0], avg = arr[0];
 	for (i = 1; i < arr.length; i++){
 		if (arr[i] > max){
 			max = arr[i];
@@ -137,7 +137,7 @@ function shiftByOne(arr){
 
 // replace all negative numbers in array with string "Dojo"
 function numberToString(arr){
-	for (i in arr){
+	for (var i in arr){
 		if (arr[i] < 0){
 			arr[i] = "Dojo";
 		}
@@ -151,7 +151,7 @@ function numberToString(arr){
 function randArray(){
 	var arr = [];
 	for (i = 0; i < 10; i++){
-		arr.push(Math.floor(Math.random() * 100))
+		arr.push(Math.floor(Math.random() * 100));
 	}
 	return arr;
 }
@@ -209,7 +209,7 @@ function removeNegatives(arr){
 
 // return index of a given number in an array
 function linearSearch(arr, x){
-	for (i in arr){
+	for (var i in arr){
 		if (arr[i] == x){
 			return i;
 		}
@@ -227,4 +227,12 @@ function iSum(n){
 	}
 	return sum;
 }
-console.log(iSum(5));
+// console.log(iSum(5));
+
+// sum all digits in a positive int
+function SumToDigit(n){
+	if (n === 0 ) return 0;
+	return Math.abs(n % 9 === 0 ? 9 : n % 9);
+}
+// var x = -5467345;
+// console.log(SumToDigit(x));

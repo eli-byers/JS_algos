@@ -1,13 +1,14 @@
 function RadixSort(arr, n, mask){
-	if (n == undefined){
-		var max = arr[0];
-		var min = arr[0];
+	var max, min;
+	var buckets = [0,0,0,0,0,0,0,0,0,0];
+	var negBuckets = [0,0,0,0,0,0,0,0,0,0];
+	if (n === undefined){
+		max = arr[0];
+		min = arr[0];
 		mask = 10;
 	} else if (n <= 0){
 		return arr;
 	}
-	var buckets = [0,0,0,0,0,0,0,0,0,0];
-	var negBuckets = [0,0,0,0,0,0,0,0,0,0];
 	for (var i in arr){
 		var digit = Math.floor((arr[i] % mask) / (mask / 10));
 		if (arr[i] >= 0) {
@@ -16,7 +17,7 @@ function RadixSort(arr, n, mask){
 			negBuckets[Math.abs(digit)]++;
 		}
 		// set n
-		if (n == undefined){
+		if (n === undefined){
 		 	if (arr[i] > max){
 				max = arr[i];
 			}
@@ -26,15 +27,15 @@ function RadixSort(arr, n, mask){
 		}
 	}
 	// set n
-	if (n == undefined){
+	if (n === undefined){
 		n = (max+"").length;
 		negN = (min+"").length-1;
 	}
 	var arrs = sortArr(arr, buckets, negBuckets, mask);
 	var negatives = arrs[0];
 	var positives = arrs[1];
-	negatives = RadixSort(negatives, --negN, (mask * 10))
-	positives = RadixSort(positives, --n, (mask * 10))
+	negatives = RadixSort(negatives, --negN, (mask * 10));
+	positives = RadixSort(positives, --n, (mask * 10));
 	if( negatives[0] > negatives[negatives.length-1]){
 		negatives.reverse();
 	}
@@ -43,12 +44,12 @@ function RadixSort(arr, n, mask){
 }
 
 function sortArr(arr, buckets, negBuckets, mask){
-	for (var i = 1; i < 10; i++){
+	var ret = [], negRet = [];
+	for (i = 1; i < 10; i++){
 		buckets[i] += buckets[i-1];
 		negBuckets[i] += negBuckets[i-1];
 	}
-	var ret = [], negRet = [];
-	for (var i = arr.length-1; i >= 0; i--){
+	for (i = arr.length-1; i >= 0; i--){
 		var digit = Math.floor((arr[i] % mask) / (mask / 10));
 		if (arr[i] > 0){
 			ret[--buckets[digit]] = arr[i];
