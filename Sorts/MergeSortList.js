@@ -8,7 +8,7 @@ function SLL(){
 	this.head = null;
 
 	this.push  = function (val) {
-		if (this.head == null) {
+		if (this.head === null) {
 			this.head = new Node(val);
 		} else {
 			var current = this.head;
@@ -29,9 +29,9 @@ function SLL(){
 
 	this.pop  = function () {
 		var val = null;
-		if (this.head == null) {
+		if (this.head === null) {
 			return val;
-		} else if (this.head.next == null){
+		} else if (this.head.next === null){
 			val = this.head.value;
 			this.head = null;
 		} else {
@@ -54,7 +54,7 @@ function SLL(){
 			while(current.next.value != val && current.next) {
 				current = current.next;
 			}
-			if (current.next != null){
+			if (current.next !== null){
 				temp = current.next.next;
 				current.next = temp;
 			}
@@ -73,11 +73,11 @@ function SLL(){
 			}
 		}
 		return count;
-	}
+	};
 
 	this.find = function (val) {
 		var current = this.head;
-		while(current != null) {
+		while(current !== null) {
 			if(current.value == val) {
 				return current;
 			}

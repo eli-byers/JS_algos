@@ -12,7 +12,6 @@ function arraysEqual(a, b) {
 function Merge(arr1, arr2){
 	var x1 = 0, x2 = 0, newArray = [];
 	while(x1 < arr1.length || x2 < arr2.length){
-    console.log(arr1[x1], arr2[x2]);
 		if(x1 < arr1.length && (arr1[x1] <= arr2[x2] || arr2[x2] === undefined)){
 			newArray.push(arr1[x1++]);
 		}

@@ -137,6 +137,20 @@ function SLL(val){
     }
   };
 
+  this.isCircular = function(){
+    if (this.head) {
+      var slow = this.head;
+      var fast = this.head;
+      while (fast.next) {
+        fast = fast.next;
+        if (fast == slow || fast.next == slow) return true;
+        fast = fast.next;
+        slow = slow.next;
+      }
+    }
+    return false;
+  };
+
   //======================================
   //               VIEW
   //======================================

@@ -4,32 +4,32 @@ function btNode(val){
 	this.right = null;
 }
 
-	btNode.prototype.count = function(){
-		var left = 0, right = 0;
-		if(this.left !== null){ left = this.left.count(); }
-		if(this.right !== null){ right = this.right.count(); }
-		return 1 + left + right;
-	};
+  btNode.prototype.count = function(){
+  	var left = 0, right = 0;
+  	if(this.left !== null){ left = this.left.count(); }
+  	if(this.right !== null){ right = this.right.count(); }
+  	return 1 + left + right;
+  };
 
-	btNode.prototype.valid = function(){
-		var left = true, right = true;
-		if(this.left !== null){
-			if (this.left.val > this.val){ return false; }
-			left = left && this.left.valid();
-		}
-		if(this.right !== null){
-			if (this.right.val < this.val){ return false; }
-			right = right && this.right.valid();
-		}
-		return left && right;
-	};
+  btNode.prototype.valid = function(){
+  	var left = true, right = true;
+  	if(this.left !== null){
+  		if (this.left.val > this.val){ return false; }
+  		left = left && this.left.valid();
+  	}
+  	if(this.right !== null){
+  		if (this.right.val < this.val){ return false; }
+  		right = right && this.right.valid();
+  	}
+  	return left && right;
+  };
 
-	btNode.prototype.height = function(){
-		var lKids = 0, rKids = 0;
-		if (this.left){ lKids += this.left.height();}
-		if (this.right){ lKids += this.right.height();}
-		return 1 + (lKids > rKids ? lKids : rKids);
-	};
+  btNode.prototype.height = function(){
+  	var lKids = 0, rKids = 0;
+  	if (this.left){ lKids += this.left.height();}
+  	if (this.right){ lKids += this.right.height();}
+  	return 1 + (lKids > rKids ? lKids : rKids);
+  };
 
 
 function BST(){
@@ -45,19 +45,19 @@ function BST(){
 	BST.prototype.add = function(val, cur){
 		if (this.isEmpty()){
 			this.root = new btNode(val);
-			return val;
+			return this;
 		}
 		if (cur === undefined){ cur = this.root; }
 		if (val > cur.val){
 			if(cur.right === null){
 				cur.right = new btNode(val);
-				return val;
+				return this;
 			}
 			cur = cur.right;
 		} else if (val < cur.val){
 			if(cur.left === null){
 				cur.left = new btNode(val);
-				return val;
+				return this;
 			}
 			cur = cur.left;
 		} else { return val; }
@@ -109,7 +109,7 @@ function BST(){
 				return this.remove(this.root.val, this.root.right, this.root);
 			} else {
 				this.root = this.root.left ? this.root.left : this.root.right;
-				return true;
+				return this;
 			}
 		}
 		if (cur === undefined){ cur = this.root;}
@@ -123,7 +123,7 @@ function BST(){
 			} else if (parent.right == cur){
 				parent.right = cur.right ? cur.right : cur.left;
 			}
-			return true;
+			return this;
 		}
 		parent = cur;
 		cur = val < cur.val ? cur.left : cur.right;
@@ -144,22 +144,17 @@ function BST(){
 	};
 
 var bst = new BST();
-console.log(bst.add(5));
-console.log(bst.add(6));
-console.log(bst.add(7));
+bst.add(5).add(6).add(7);
 
-console.log(bst);
-// console.log("true:", bst.contains(4));
-// console.log("false:", bst.contains(2));
-// console.log("1:", bst.min());
-// console.log("12:", bst.max());
-// console.log("7:", bst.size());
-// console.log("true:", bst.isValid());
+console.log("false:", bst.contains(4));
+console.log("true:", bst.contains(7));
+console.log("5:", bst.min());
+console.log("7:", bst.max());
+console.log("3:", bst.size());
+console.log("true:", bst.isValid());
 
-// bst.remove(5);
-// console.log(bst);
+bst.remove(5);
 
 console.log("false:", bst.isBalanced());
-console.log(bst.add(2));
-console.log(bst.add(1));
+bst.add(2).add(1);
 console.log("true:", bst.isBalanced());
