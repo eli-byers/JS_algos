@@ -1,10 +1,10 @@
 function moveZeros(arr){
 	if (arr.length < 2){
-		return
+		return;
 	}
 	var idx = 0;
 	for (i = 0; i < arr.length; i++){
-		if (arr[i] != 0){
+		if (arr[i] !== 0){
 			if (i > idx){
 				arr[idx] = arr[i];
 			}
@@ -14,7 +14,7 @@ function moveZeros(arr){
 	while (idx < arr.length){
 		arr[idx++] = 0;
 	}
-	return arr
+	return arr;
 }
 
 var arr =  [45, 14, 0, 1, 0, 3, 12, 0, 34];

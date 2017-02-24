@@ -31,11 +31,13 @@ function RadixSort(arr, n, mask){
 		n = (max+"").length;
 		negN = (min+"").length-1;
 	}
+	addBuckets(buckets, negBuckets);
 	var arrs = sortArr(arr, buckets, negBuckets, mask);
 	var negatives = arrs[0];
 	var positives = arrs[1];
 	negatives = RadixSort(negatives, --negN, (mask * 10));
 	positives = RadixSort(positives, --n, (mask * 10));
+	console.log(negatives);
 	if( negatives[0] > negatives[negatives.length-1]){
 		negatives.reverse();
 	}
@@ -43,12 +45,15 @@ function RadixSort(arr, n, mask){
 	return arr;
 }
 
-function sortArr(arr, buckets, negBuckets, mask){
-	var ret = [], negRet = [];
+function addBuckets(buckets, negBuckets){
 	for (i = 1; i < 10; i++){
 		buckets[i] += buckets[i-1];
 		negBuckets[i] += negBuckets[i-1];
 	}
+}
+
+function sortArr(arr, buckets, negBuckets, mask){
+	var ret = [], negRet = [];
 	for (i = arr.length-1; i >= 0; i--){
 		var digit = Math.floor((arr[i] % mask) / (mask / 10));
 		if (arr[i] > 0){

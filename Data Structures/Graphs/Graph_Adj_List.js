@@ -1,5 +1,5 @@
-var l = require("./SLL.js");
-var q = require("./SLQ.js");
+var l = require("../SLL.js");
+var q = require("../SLQ.js");
 
 function printGraph(graph){
   for (l in graph){
@@ -54,6 +54,7 @@ graph = [
           new l.SLL([0,1,6]),
           new l.SLL([5]),
         ];
+
 printGraph(graph);
 console.log("root = 2");
 console.log(BredthFirstSearch(graph, 2));

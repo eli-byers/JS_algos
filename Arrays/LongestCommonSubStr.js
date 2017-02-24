@@ -1,4 +1,4 @@
-function LongestCommonSubStr(str1, str2){
+function longestCommonSubStr(str1, str2){
   // The length of the longest common string
   var strLength = 0;
   // The postion of the last character in the longest string
@@ -44,7 +44,7 @@ function LongestCommonSubStr(str1, str2){
   // ==================== MAP =======================
   // This is a log of the data structure that you create.
   // I have added the characters along the axis so you can see what the numbers reference.
-  // NOTE: Each number is the count of matches at that point in the string.
+  // Each number is the count of matches at that point in the string.
   console.log("    "+str2.split("").join("  "));
   for(var g in matrix){
     console.log(str1[g], matrix[g]);
@@ -70,5 +70,5 @@ function LongestCommonSubStr(str1, str2){
 // Run the function
 var str1 = "hello world";
 var str2 = "wow its yello";
-var LCS  = LongestCommonSubStr(str1, str2);
+var LCS  = longestCommonSubStr(str1, str2);
 console.log("LCS:", LCS);

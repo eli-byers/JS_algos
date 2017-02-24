@@ -72,6 +72,6 @@ function longestPalindrome(str){
 
 str = "racecars lol aceca asdfasdfasdfasdf";
 console.log(isPalindrome(str));         // false
-console.log(isPalindrome(str, 0, 2));   // true
-console.log(isPalindrome(str, 4, 10));  // true
+console.log(isPalindrome(str, 0, 6));   // true
+console.log(isPalindrome(str, 9, 11));  // true
 console.log(longestPalindrome(str));    // racecar

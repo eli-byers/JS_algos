@@ -4,33 +4,83 @@ function btNode(val){
 	this.right = null;
 }
 
-  btNode.prototype.count = function(){
-  	var left = 0, right = 0;
-  	if(this.left !== null){ left = this.left.count(); }
-  	if(this.right !== null){ right = this.right.count(); }
-  	return 1 + left + right;
-  };
+	btNode.prototype.count = function(){
+		var left = 0, right = 0;
+		if(this.left !== null){ left = this.left.count(); }
+		if(this.right !== null){ right = this.right.count(); }
+		return 1 + left + right;
+	};
 
-  btNode.prototype.valid = function(){
-  	var left = true, right = true;
-  	if(this.left !== null){
-  		if (this.left.val > this.val){ return false; }
-  		left = left && this.left.valid();
-  	}
-  	if(this.right !== null){
-  		if (this.right.val < this.val){ return false; }
-  		right = right && this.right.valid();
-  	}
-  	return left && right;
-  };
+	btNode.prototype.valid = function(){
+		var left = true, right = true;
+		if(this.left !== null){
+			if (this.left.val > this.val){ return false; }
+			left = left && this.left.valid();
+		}
+		if(this.right !== null){
+			if (this.right.val < this.val){ return false; }
+			right = right && this.right.valid();
+		}
+		return left && right;
+	};
 
-  btNode.prototype.height = function(){
-  	var lKids = 0, rKids = 0;
-  	if (this.left){ lKids += this.left.height();}
-  	if (this.right){ lKids += this.right.height();}
-  	return 1 + (lKids > rKids ? lKids : rKids);
-  };
+	btNode.prototype.maxHeight = function(){
+		var L = 0, R = 0;
+		if (this.left){ L = this.left.maxHeight(); }
+		if (this.right){ L = this.right.maxHeight(); }
+		return 1 + (L > R ? L : R);
+	};
 
+	btNode.prototype.minHeight = function(){
+		var L = 0, R = 0;
+		if (this.left){ L = this.left.minHeight(); }
+		if (this.right){ R = this.right.minHeight(); }
+		return 1 + (L < R ? L : R);
+	};
+
+	// using max and min height
+	btNode.prototype.isBalanced = function(){
+		// break cases
+		if (this.isLeaf() || this.isTwig()) return true;
+		if (!this.right || !this.left) return false;
+		// compair max to min
+		var max = this.maxHeight();
+		var min = this.minHeight();
+		return max - min <= 1;
+	};
+
+	// using only maxHeight
+	btNode.prototype.isBalancedII = function(){
+		// break cases
+		if (this.isLeaf() || this.isTwig()) return true;
+		if (!this.right || !this.left) return false;
+		// check height of children
+		var R = this.right.maxHeight();
+		var L = this.left.maxHeight();
+		var balanced = (-1 <= R - L && R - L <= 1);
+		if (!balanced) return false;
+		// if this seems balanced check the children
+		return this.left.isBalanced() && this.right.isBalanced();
+	};
+
+	// no children
+	btNode.prototype.isLeaf = function(){
+		return !this.right && !this.left;
+	};
+
+	// one child who is a leaf
+	btNode.prototype.isTwig = function(){
+		if (!this.right && this.left.isLeaf()) return true;
+		if (!this.left && this.right.isLeaf()) return true;
+		return false;
+	};
+
+	btNode.prototype.show = function (height) {
+		if (this.left) this.left.show(height-1);
+		var space = "   ";
+		console.log(space.repeat(height-1),this.val);
+		if (this.right) this.right.show(height-1);
+	};
 
 function BST(){
 	this.root = null;
@@ -64,7 +114,13 @@ function BST(){
 		return this.add(val, cur);
 	};
 
+	BST.prototype.addArr = function(arr){
+		for (var i in arr) { this.add(arr[i]); }
+		return this;
+	};
+
 	BST.prototype.contains = function(val, cur){
+		if (this.root === null) return false;
 		if (cur === undefined){ cur = this.root; }
 		if (val == cur.val){ return true; }
 		if (val > cur.val){
@@ -102,7 +158,7 @@ function BST(){
 	};
 
 	BST.prototype.remove = function (val, cur, parent) {
-		if (this.isEmpty()){ return; }
+		if (this.isEmpty()){ return this; }
 		if (this.root.val == val && cur === undefined){
 			if (this.root.left && this.root.right){
 				this.root.val = this.min(this.root.right);
@@ -113,7 +169,7 @@ function BST(){
 			}
 		}
 		if (cur === undefined){ cur = this.root;}
-		if (cur === null){ return false; }
+		if (cur === null){ return this; }
 		if (val == cur.val){
 			if (cur.left && cur.right){
 				cur.val = this.min(cur.right);
@@ -130,31 +186,48 @@ function BST(){
 		return this.remove(val, cur, parent);
 	};
 
-	BST.prototype.height = function(){
-		return this.root ? this.root.height() : 0;
+	BST.prototype.maxHeight = function(){
+		return this.root ? this.root.maxHeight() : 0;
 	};
 
+	// using max and min height
 	BST.prototype.isBalanced = function(){
-		if (this.root){
-			var left = this.root.left ? this.root.left.height() : 0;
-			var right = this.root.right ? this.root.right.height() : 0;
-			return left == right ? true : false;
+		if (!this.root) return true;
+		return this.root.isBalanced();
+	};
+
+	// only using max height
+	BST.prototype.isBalancedII = function(){
+		if (!this.root) return true;
+		return this.root.isBalancedII();
+	};
+
+	BST.prototype.show = function(){
+		if (!this.root) {
+			console.log("Empty Tree");
+			return this;
 		}
-		return true;
+		var height = this.maxHeight();
+		console.log('----------------------');
+		this.root.show(height);
+		console.log('----------------------');
 	};
 
 var bst = new BST();
-bst.add(5).add(6).add(7);
+bst.addArr([5, 6, 7, 3, 4]);
 
-console.log("false:", bst.contains(4));
-console.log("true:", bst.contains(7));
-console.log("5:", bst.min());
-console.log("7:", bst.max());
-console.log("3:", bst.size());
-console.log("true:", bst.isValid());
+// bst.show();
 
-bst.remove(5);
+console.log("contains(4) true:", bst.contains(4));
+console.log("contains(8) false:", bst.contains(8));
+console.log("min 5:", bst.min());
+console.log("max 7:", bst.max());
+console.log("size 5:", bst.size());
+console.log("isValid true:", bst.isValid());
+//
+bst.remove(3).show();
+bst.remove(4).show();
 
-console.log("false:", bst.isBalanced());
-bst.add(2).add(1);
-console.log("true:", bst.isBalanced());
+console.log("isBalanced false:", bst.isBalanced());
+bst.add(1).add(2).show();
+console.log("isBalanced true:", bst.isBalanced());

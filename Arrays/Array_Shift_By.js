@@ -1,3 +1,5 @@
+// NOTE: work in progress
+
 function shift(arr, n){
   n %= arr.length;
   console.log(n);

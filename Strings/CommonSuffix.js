@@ -18,4 +18,3 @@ function commonSuffix(arr){
 
 arr = ["lice", "nice", "dice"];
 console.log(commonSuffix(arr));
-console.log(commonSuffixII(arr));
