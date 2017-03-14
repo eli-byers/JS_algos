@@ -22,11 +22,11 @@ function MergeSortArr(arr){
 		return arr;
 	}
 	var mid = Math.floor(arr.length/2);
-	var right = arr.slice(mid,arr.length);
-	arr = arr.slice(0, mid);
+	var right = arr.splice(mid);
 
 	arr = MergeSortArr(arr);
 	right = MergeSortArr(right);
+
 	return CombineArrs(arr,right);
 }
 
