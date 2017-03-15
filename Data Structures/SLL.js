@@ -52,6 +52,41 @@ SLL.prototype.pushFront = function(val){
 	return this;
 };
 
+SLL.prototype.insertBefore = function(val, before){
+    let newNode = new SLNode(val);
+    this.length += 1;
+    if(this.head){
+        if (this.head.value == before){
+            newNode.next = this.head;
+            this.head = newNode;
+        } else {
+            let current = this.head;
+            while(current.next && current.next.value != before){
+                current = current.next;
+            }
+            newNode.next = current.next;
+            current.next = newNode;
+        }
+    } else {
+        this.head = newNode
+    }
+};
+
+SLL.prototype.insertAfter = function(val, after){
+    let newNode = new SLNode(val);
+    this.length += 1;
+    if(this.head){
+        let current = this.head;
+        while(current.next && current.value != after){
+            current = current.next;
+        }
+        newNode.next = current.next;
+        current.next = newNode;
+    } else {
+        this.head = newNode
+    }
+}
+
 //======================================
 //               POP
 //======================================
@@ -192,11 +227,7 @@ module.exports = {
 // Test
 //=============================================================
 
-// var list = new SLL();
-// list.push("Bob").push("Tim").push([1,2]).pushArr(["cat","dog"])
-// console.log(list.length);
-// list.print();
-// console.log( list.remove(x => x[0] == 1) );
-// list.print();
-// console.log(list.length);
+var list = new SLL();
+list.push("Bob").push("Tim").push([1,2]).pushArr(["cat","dog"])
+list.print();
 
