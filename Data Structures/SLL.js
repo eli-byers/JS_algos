@@ -1,4 +1,4 @@
-function Node(val) {
+function SLNode(val) {
 	this.value = val;
 	this.next = null;
 }
@@ -24,13 +24,13 @@ function makeCallback(val){
 SLL.prototype.push = function(val) {
 	this.length += 1;
 	if (this.head === null) {
-		this.head = new Node(val);
+		this.head = new SLNode(val);
 	} else {
 		var current = this.head;
 		while(current.next) {
 			current = current.next;
 		}
-		current.next = new Node(val);
+		current.next = new SLNode(val);
 	}
 	return this;
 };
@@ -46,9 +46,11 @@ SLL.prototype.pushArr = function(val){
 
 SLL.prototype.pushFront = function(val){
 	this.length += 1;
-	var head = this.head;
-	this.head = new Node(val);
-	this.head.next = head;
+    if (val.constructor != SLNode){
+        node = new SLNode(val);
+    } else node = val;
+    node.next = this.head;
+    this.head = node;
 	return this;
 };
 
@@ -109,11 +111,14 @@ SLL.prototype.pop  = function () {
 	return val;
 };
 
-SLL.prototype.popFront = function(){
+SLL.prototype.popFront = function(returnNode){
 	var val = null;
 	if (this.head !== null){
 		this.length -= 1;
-		val = this.head.value;
+        if (returnNode) {
+            val = this.head;
+            val.next = null;
+        } else val = this.head.value;
 		this.head = this.head.next;
 	}
 	return val;
@@ -228,6 +233,9 @@ module.exports = {
 //=============================================================
 
 var list = new SLL();
-list.push("Bob").push("Tim").push([1,2]).pushArr(["cat","dog"])
-list.print();
+console.log(list.constructor);
+
+
+// list.push("Bob").push("Tim").push([1,2]).pushArr(["cat","dog"])
+// list.print();
 
