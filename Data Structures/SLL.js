@@ -6,7 +6,7 @@ function SLNode(val) {
 
 function SLL(val){
 	this.head = null;
-	this.length = 0;
+	this.count = 0;
 	if (val){
 		this.push(val);
 	}
@@ -21,8 +21,13 @@ function makeCallback(val){
 //======================================
 //               PUSH
 //======================================
-SLL.prototype.push = function(val) {
-	this.length += 1;
+SLL.prototype.push = function(val, isArray) {
+    if (isArray && val.constructor == Array){
+		for (var i in val) {
+			this.push(val[i]);
+		}
+	}
+	this.count += 1;
 	if (this.head === null) {
 		this.head = new SLNode(val);
 	} else {
@@ -35,17 +40,13 @@ SLL.prototype.push = function(val) {
 	return this;
 };
 
-SLL.prototype.pushArr = function(val){
-	if (val instanceof Array){
+SLL.prototype.pushFront = function(val, isArray){
+    if (isArray && val.constructor == Array){
 		for (var i in val) {
-			this.push(val[i]);
+			this.pushFront(val[i]);
 		}
 	}
-	return this;
-};
-
-SLL.prototype.pushFront = function(val){
-	this.length += 1;
+	this.count += 1;
     if (val.constructor != SLNode){
         node = new SLNode(val);
     } else node = val;
@@ -56,7 +57,7 @@ SLL.prototype.pushFront = function(val){
 
 SLL.prototype.insertBefore = function(val, before){
     let newNode = new SLNode(val);
-    this.length += 1;
+    this.count += 1;
     if(this.head){
         if (this.head.value == before){
             newNode.next = this.head;
@@ -76,7 +77,7 @@ SLL.prototype.insertBefore = function(val, before){
 
 SLL.prototype.insertAfter = function(val, after){
     let newNode = new SLNode(val);
-    this.length += 1;
+    this.count += 1;
     if(this.head){
         let current = this.head;
         while(current.next && current.value != after){
@@ -95,7 +96,7 @@ SLL.prototype.insertAfter = function(val, after){
 SLL.prototype.pop  = function () {
 	var val = null;
 	if (this.head) {
-		this.length -= 1;
+		this.count -= 1;
 		if (!this.head.next){
 			val = this.head.value;
 			this.head = null;
@@ -113,13 +114,13 @@ SLL.prototype.pop  = function () {
 
 SLL.prototype.popFront = function(returnNode){
 	var val = null;
-	if (this.head !== null){
-		this.length -= 1;
+	if (this.head){
         if (returnNode) {
             val = this.head;
             val.next = null;
         } else val = this.head.value;
 		this.head = this.head.next;
+		this.count -= 1;
 	}
 	return val;
 };
@@ -143,7 +144,7 @@ SLL.prototype.remove = function(val) {
 			current.next = current.next.next;
 		}
 	}
-	if (node) this.length -= 1;
+	if (node) this.count -= 1;
 	return node;
 };
 
@@ -224,7 +225,8 @@ SLL.prototype.print = function (callback, end) {
 
 
 module.exports = {
-	SLL: SLL
+	SLL: SLL,
+    SLNode: SLNode,
 };
 
 
@@ -232,8 +234,8 @@ module.exports = {
 // Test
 //=============================================================
 
-var list = new SLL();
-console.log(list.constructor);
+// var list = new SLL();
+// console.log(list.constructor);
 
 
 // list.push("Bob").push("Tim").push([1,2]).pushArr(["cat","dog"])

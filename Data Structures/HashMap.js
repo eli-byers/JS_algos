@@ -24,7 +24,7 @@ HashMap.prototype.mod = function(hash){
 }
 HashMap.prototype.add = function(key, value){
     let hash = key.hashCode();
-    let idx = this.mod(hash);    
+    let idx = this.mod(hash);
     if (this.table[idx] === undefined){
         this.table[idx] = new l.SLL();
         this.table[idx].push([key, value]);
@@ -68,15 +68,29 @@ HashMap.prototype.remove = function(key){
 }
 HashMap.prototype.print = function(){
     for (let i = 0; i < this.capacity; i++){
-        if (this.table[i]){ 
-            this.table[i].print(x => "{"+x[0]+" : "+x[1]+"}  --  ") 
-        } else console.log("<undefined>");
+        if (this.table[i]){
+            // this.table[i].print()
+            this.table[i].print(x => "{"+x[0]+" : "+x[1]+"}  --  ","")
+        } else console.log("<udf>");
     }
     return this;
 }
+HashMap.prototype.keys = function(){
+    let keys = [];
+    for (let i = 0; i < this.table.length; i++){
+        if (this.table[i]){
+            var current = this.table[i].head;
+            while(current) {
+                keys.push(current.value[0])
+                current = current.next;
+            }
+        }
+    }
+    return keys;
+}
 HashMap.prototype.loadFactor = function(){
-    let loadFactor = this.capacity / 0.75;
-    return this.keyCount >= loadFactor;   
+    let loadFactor = this.capacity * 0.75;
+    return this.keyCount >= loadFactor;
 }
 HashMap.prototype.metaData = function(){
     let optimal = this.keyCount/this.capacity;
@@ -94,28 +108,39 @@ HashMap.prototype.metaData = function(){
 }
 HashMap.prototype.grow = function(){
     let oldCap = this.capacity;
-    this.capacity = Math.floor(this.capacity * 2);
+    this.capacity *= 2;
     for (let i = 0; i < oldCap; i++){
+        // if there is somehting in the bucket
         if(this.table[i]){
-            if (this.table[i].constructor == l.SLL){
+            // if it's not an Array - make parallell Array
+            if (this.table[i].constructor != Array){
                 this.table[i] = [this.table[i], new l.SLL()];
             }
-            if (this.table[i][0]){
-                let current = this.table[i][0].head;
-                while(current){
-                    let node = this.table[i][0].popFront(true);
+            // now is's an array - is there a list at [0]?
+            else if (this.table[i][0]){
+                let node = this.table[i][0].popFront(true);
+                while (node){
                     this.growAdd(node);
-                    current = current.next;
+                    node = this.table[i][0].popFront(true);
                 }
             }
         }
     }
+    // flatten paralles Arrays
     for (let i = 0; i < this.capacity; i++){
+        // if there is somehting in the bucket it's an array
         if(this.table[i]){
-            if (!this.table[i][0]) this.table[i][0] = this.table[i][1]
-            else if(this.table[i][1]) this.table[i][0].head = this.table[i][1].head;
-            this.table[i] = this.table[i][0];
-        } 
+            // if there is not an SLL in [0], make bucket the SLL from [1]
+            if (!this.table[i][0]) {
+                this.table[i] = this.table[i][1];
+            }
+            // if there is an SLL in [0] move over nodes and count
+            else {
+                this.table[i][0].head = this.table[i][1].head;
+                this.table[i][0].length = this.table[i][1].length;
+                this.table[i] = this.table[i][0];
+            }
+        }
     }
 
 }
@@ -123,22 +148,27 @@ HashMap.prototype.growAdd = function(node){
     if (node){
         let hash = node.value[0].hashCode();
         let idx = this.mod(hash);
+        // if there is nothing in the bucket, make Array
         if (!this.table[idx]){
             this.table[idx] = [undefined, new l.SLL()];
-        } else if (this.table[idx].constructor == l.SLL){
+        }
+        // if it's an SLL, make Array 
+        else if (this.table[idx].constructor == l.SLL){
             this.table[idx] = [this.table[idx], new l.SLL()];
         }
+        // it's an Array, add to new SLL
         this.table[idx][1].pushFront(node)
     }
     return this;
 }
 
+// check for [undefined, SLL] case in first loop
 
 //=============================================================
 // Test
 //=============================================================
 
-function makeKey() {
+function randomKey() {
     var text = "";
     var caps = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
     var possible = "abcdefghijklmnopqrstuvwxyz";
@@ -149,6 +179,29 @@ function makeKey() {
 }
 
 let map = new HashMap(16);
-for (let i = 0; i < 50; i++){ map.add(makeKey(), i); }
-map.print();
-console.log(map.capacity);
+let dict = {}
+for (let i = 0; i < 16; i++){
+	let key = randomKey();
+	dict[key] = true;
+	map.add(key, i);
+}
+
+// map.print();
+// console.log(map.capacity);
+
+// console.log(map.keys().length, Object.keys(dict).length);
+
+
+let list = new l.SLL();
+let node = new l.SLNode(["name", "Bob"])
+let node1 = new l.SLNode(["age", 35])
+let node2 = new l.SLNode(["email", "bob@bob.com"])
+let node3 = new l.SLNode(["job", "Bobbing"])
+list.pushFront(node);
+list.pushFront(node1);
+list.pushFront(node2);
+list.pushFront(node3);
+list.print();
+let poped = list.popFront(true);
+list.print();
+console.log(poped);
