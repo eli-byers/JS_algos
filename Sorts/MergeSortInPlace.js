@@ -14,24 +14,22 @@ function MergeSort(arr, start, end){
 }
 
 function inplaceCombine(arr, s1, e1, s2, e2){
-    while(s1 <= e1 || s2 < e2){
-        if (s1 <= e1){
-            if (arr[s1] > arr[s2]){
-                arr.swap(s1,s2)
-                let ts2 = s2
-                while(ts2 < e2 && arr[ts2] > arr[ts2+1]){
-                    arr.swap(ts2, ts2+1)
-                    ts2++;
-                }
+    while(s1 <= e1){
+        if (arr[s1] > arr[s2]){
+            arr.swap(s1,s2)
+            let ts2 = s2
+            while(ts2 < e2 && arr[ts2] > arr[ts2+1]){
+                arr.swap(ts2, ts2+1)
+                ts2++;
             }
-            s1++;
-        } else {
-            if (arr[s2] > arr[s2+1]) arr.swap(s2, s2+1)
-            s2++;
         }
+        s1++;
     }
     return arr;
 }
 
-var arr = [6,3,4,7,2,1,9,11,8,5,10];
+var arr = [];
+for (var i = 0; i < 100; i++){
+    arr.push(Math.floor(Math.random()*100))
+}
 console.log(MergeSort(arr));

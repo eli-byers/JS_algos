@@ -11,9 +11,10 @@ function TrieNode(value){
 TrieNode.prototype.addChild = function(value){
     var newNode = new TrieNode(value);
     this.children.push(newNode)
-    return this.children[this.children.length-1];
+    return newNode;
 }
 TrieNode.prototype.insert = function(str, idx){
+    if (str == "") return false;
     if (idx === undefined) idx = 0;
     var nextNode = null;
     if (this.children.length === 0){
@@ -38,19 +39,22 @@ TrieNode.prototype.insert = function(str, idx){
 TrieNode.prototype.findNode = function(str, idx){    
     if (idx === undefined) idx = 0;
     else idx += 1;
-    if (idx >= str.length) return this;
-    for(var i = 0; i < this.children.length; i++){        
-        if (str[idx] == this.children[i].value) {
-            return this.children[i].findNode(str, idx)
+    var node = null;
+    if (idx >= str.length) node = this;
+    else {
+        for(var i = 0; i < this.children.length; i++){        
+            if (str[idx] == this.children[i].value) {
+                node = this.children[i].findNode(str, idx)
+            }
         }
     }
-    return null;
+    return node;
 }
 TrieNode.prototype.findWords = function(str, words){
     str += this.value;
     if (this.isWord) words.push(str);
     for(var i = 0; i < this.children.length; i++){
-        this.children[i].findWords(str,words);
+        this.children[i].findWords(str, words);
     }
 }
 
@@ -82,18 +86,26 @@ Trie.prototype.ListWordsStartingFrom = function(str){
         this.root.findWords("", words);
     } else {
         node = this.root.findNode(str);
-        st = str.slice(0,str.length-1)
-        if (node) node.findWords(st, words);
+        if (node) {
+            if (node.isWord) words.push(str);
+            for (var i = 0; i < node.children.length; i++){
+                node.children[i].findWords(str, words);
+            }
+        }
     }
     return words;
 }
 
 
 
-var words = ["cat", "catch", "call", "care", "bob", "bobbers", "bear"]
+var words = ["cold", "coin", "catch", "call", "care", "bob", "bobbers", "bear"]
 var trie = new Trie();
 trie.insert(words);
 words_from_bo = trie.ListWordsStartingFrom("bo");
+words_from_c = trie.ListWordsStartingFrom("c");
 words_from_ca = trie.ListWordsStartingFrom("ca");
+words_from_co = trie.ListWordsStartingFrom("co");
 console.log(words_from_bo);
+console.log(words_from_c);
 console.log(words_from_ca);
+console.log(words_from_co);
