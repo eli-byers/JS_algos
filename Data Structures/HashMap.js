@@ -1,4 +1,4 @@
-var l = require("./SLL.js");
+var SLL = require("./SLL.js").SLL;
 
 String.prototype.hashCode = function(){
     var hash = 0;
@@ -26,7 +26,7 @@ HashMap.prototype.add = function(key, value){
     let hash = key.hashCode();
     let idx = this.mod(hash);
     if (this.table[idx] === undefined){
-        this.table[idx] = new l.SLL();
+        this.table[idx] = new SLL();
         this.table[idx].push([key, value]);
         this.keyCount += 1;
     } else {
@@ -69,7 +69,7 @@ HashMap.prototype.remove = function(key){
 HashMap.prototype.print = function(){
     for (let i = 0; i < this.capacity; i++){
         if (this.table[i]){
-            // this.table[i].print()
+            // console.log( this.table[i] );
             this.table[i].print(x => "{"+x[0]+" : "+x[1]+"}  --  ","")
         } else console.log("<udf>");
     }
@@ -106,7 +106,40 @@ HashMap.prototype.metaData = function(){
     overOpt = Math.round((overOpt / this.capacity) * 100) / 100
     console.log('optimal:', optimal, '  max:', max, '  overOpt:', overOpt);
 }
+
 HashMap.prototype.grow = function(){
+    let hook = new SLL();
+    for (let i = 0; i < this.table.length; i++){
+        let list = this.table[i];
+        if(list && !list.isEmpty()){
+            hook.concat(list);
+        }
+        this.table[i] = undefined;
+    }
+    this.capacity *= 2;
+    let node = hook.popFront(true);
+    while (node){
+        this.growAdd(node);
+        node = hook.popFront(true);
+    }
+    return this;
+}
+
+HashMap.prototype.growAdd = function(node){
+    if (node){
+        let hash = node.value[0].hashCode();
+        let idx = this.mod(hash);
+        
+        // if there is nothing in the bucket, make SLL
+        if (!this.table[idx]) this.table[idx] = new SLL();
+        this.table[idx].push(node)
+    }
+    return this;
+}
+
+// Work in Progress
+
+HashMap.prototype.growOld = function(){
     let oldCap = this.capacity;
     this.capacity *= 2;
     for (let i = 0; i < oldCap; i++){
@@ -114,7 +147,7 @@ HashMap.prototype.grow = function(){
         if(this.table[i]){
             // if it's not an Array - make parallell Array
             if (this.table[i].constructor != Array){
-                this.table[i] = [this.table[i], new l.SLL()];
+                this.table[i] = [this.table[i], new SLL()];
             }
             // now is's an array - is there a list at [0]?
             else if (this.table[i][0]){
@@ -144,17 +177,17 @@ HashMap.prototype.grow = function(){
     }
 
 }
-HashMap.prototype.growAdd = function(node){
+HashMap.prototype.growAddOld = function(node){
     if (node){
         let hash = node.value[0].hashCode();
         let idx = this.mod(hash);
         // if there is nothing in the bucket, make Array
         if (!this.table[idx]){
-            this.table[idx] = [undefined, new l.SLL()];
+            this.table[idx] = [undefined, new SLL()];
         }
         // if it's an SLL, make Array 
-        else if (this.table[idx].constructor == l.SLL){
-            this.table[idx] = [this.table[idx], new l.SLL()];
+        else if (this.table[idx].constructor == SLL){
+            this.table[idx] = [this.table[idx], new SLL()];
         }
         // it's an Array, add to new SLL
         this.table[idx][1].pushFront(node)
@@ -170,38 +203,27 @@ HashMap.prototype.growAdd = function(node){
 
 function randomKey() {
     var text = "";
-    var caps = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-    var possible = "abcdefghijklmnopqrstuvwxyz";
+    var caps = "ABCDEFGHIJKLMNOPQRSTUVWXYZ "
+    var possible = "abcdefghijklmnopqrstuvwxyz ";
     text += caps.charAt(Math.floor(Math.random() * caps.length));
-    for( var i=0; i < 5; i++ )
+    length = 4 + (Math.random() * 5);
+    for( var i=0; i < length; i++ )
         text += possible.charAt(Math.floor(Math.random() * possible.length));
     return text;
 }
 
-let map = new HashMap(16);
+let map = new HashMap(3);
 let dict = {}
-for (let i = 0; i < 16; i++){
+for (let i = 0; i < 6; i++){
 	let key = randomKey();
 	dict[key] = true;
-	map.add(key, i);
+	map.add(key, true);
+
+    map.print();
+    console.log("--------------------------------------------------------");
 }
 
-// map.print();
-// console.log(map.capacity);
 
-// console.log(map.keys().length, Object.keys(dict).length);
+console.log(map.capacity);
 
-
-let list = new l.SLL();
-let node = new l.SLNode(["name", "Bob"])
-let node1 = new l.SLNode(["age", 35])
-let node2 = new l.SLNode(["email", "bob@bob.com"])
-let node3 = new l.SLNode(["job", "Bobbing"])
-list.pushFront(node);
-list.pushFront(node1);
-list.pushFront(node2);
-list.pushFront(node3);
-list.print();
-let poped = list.popFront(true);
-list.print();
-console.log(poped);
+console.log(map.keys().length, Object.keys(dict).length);
