@@ -1,3 +1,4 @@
+// extra to return sub strings in order
 function sortStrArr(arr){
 	// alphabetically
 	arr.sort();
@@ -20,4 +21,4 @@ function strSubSet(str, map, count) {
 	if (str.length == count) return sortStrArr(Object.keys(map));
 }
 
-console.log(strSubSet("eli"));
+console.log(strSubSet("bob"));

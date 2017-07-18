@@ -37,7 +37,7 @@ function RadixSort(arr, n, mask){
 	var positives = arrs[1];
 	negatives = RadixSort(negatives, --negN, (mask * 10));
 	positives = RadixSort(positives, --n, (mask * 10));
-	console.log(negatives);
+	// console.log(negatives);
 	if( negatives[0] > negatives[negatives.length-1]){
 		negatives.reverse();
 	}

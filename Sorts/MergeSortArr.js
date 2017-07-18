@@ -17,6 +17,18 @@ function CombineArrs(arr1,arr2){
     return ret;
 }
 
+function CombineArrsInPlace(arr1,arr2){
+    var i = arr1.length-1, k = arr2.length-1;
+    for (var l = i+k+1; l >= 0; l--){
+        if (arr1[i] > arr2[k]){
+            arr1[l] = arr1[i];
+        } else {
+            arr1[l] = arr2[k];
+        }
+    }
+    return arr1;
+}
+
 function MergeSortArr(arr){
     if (arr.length < 2) return arr;
     var mid = Math.floor(arr.length/2);

@@ -1,98 +1,94 @@
-function Node(index, virt) {
-  this.value = virt;
-  this.index = index;
-  this.next = null;
-  this.prev = null;
+function MPQNode(value, priority) {
+    this.value = value;
+    this.priority = priority;
+    this.next = null;
 }
-Node.prototype.enqueue = function(node){
-  if (this.next){
-    if (node.value[0] < this.next.value[0]){
-      this.next.prev = node;
-      node.next = this.next;
-      this.next = node;
-      node.prev = this;
-      return true;
-    } else {
-      return this.next.enqueue(node);
-    }
-  }
-  return false;
-};
-Node.prototype.sort = function(){
-  value = this.value;
-  index = this.index;
-  if (this.prev && this.value[0] < this.prev.value[0]){
-    this.value = this.prev.value;
-    this.index = this.prev.index;
-    this.prev.value = value;
-    this.prev.index = index;
-    this.prev.sort();
-  } else if (this.next && this.value[0] > this.next.value[0]){
-    this.index = this.next.index;
-    this.value = this.next.value;
-    this.next.value = value;
-    this.next.index = index;
-    this.next.sort();
-  }
+
+MPQNode.prototype.enqueue = function(node){
+    if (this.next){
+        if (node.priority < this.next.priority){
+            node.next = this.next;
+            this.next = node;
+        } else this.next.enqueue(node);
+    } else this.next = node;
 };
 
-function Queue(){
+// ======================  Queue  =========================
+
+function MPQ(){
   this.head = null;
-  this.tail = null;
 }
-Queue.prototype.update = function(index, virt){
-  var cur = this.head;
-  while (cur){
-    if (index == cur.index){
-      cur.value = virt;
-      cur.index = index;
-      cur.sort();
+
+MPQ.prototype.update = function(value, priority){
+    found = false;
+    if (this.head.value == value){
+        this.head = this.head.next;
+        found = true;
+    } else {
+        var current = this.head;
+        while(current.next){
+            if (value == current.next.value){
+                current.next = current.next.next;
+                found = true;
+                break
+            }
+            current = current.next;
+        }
     }
-    cur = cur.next;
-  }
+    if (found) this.enqueue(value, priority);
+}
+
+MPQ.prototype.enqueue = function(virt, priority){
+    var node = new MPQNode(virt, priority);
+    if (this.head){
+        if (priority < this.head.priority){
+            node.next = this.head;
+            this.head = node;
+        } else this.head.enqueue(node);
+    } else this.head = node;
+    return this;
 };
-Queue.prototype.enqueue = function(index, virt){
-  var node = new Node(index, virt);
-  if (this.head){
-    if (virt[0] < this.head.value[0]){
-      node.next = this.head;
-      this.head.prev = node;
-      this.head = node;
-    } else if (!this.head.enqueue(node)){
-      node.prev = this.tail;
-      this.tail.next = node;
-      this.tail = node;
+
+MPQ.prototype.dequeue = function(){
+    var node = this.head;
+    if (node){
+        node = {
+            value: this.head.value, 
+            priority: this.head.priority
+        };
+        this.head = this.head.next;
     }
-  } else{
-    this.head = node;
-    this.tail = node;
-  }
-  return this;
+    return node;
 };
-Queue.prototype.dequeue = function(){
-  var virt = this.head;
-  if (virt){
-    virt = {vert: this.head.value, index: this.head.index};
-    if (this.head.next) this.head.next.prev = null;
-    this.head = this.head.next;
-  }
-  if(!this.head) this.tail = null;
-  return virt;
-};
-Queue.prototype.print = function(print){
-  var cur = this.head;
-  var str = "";
-  while(cur) {
-    str += cur.value[0]+"-"+cur.index;
-    cur = cur.next;
-    if (cur){ str += " > "; }
-  }
-  if (print !== false){
+
+MPQ.prototype.print = function(){
+    var cur = this.head;
+    var str = "";
+    while(cur) {
+        str += cur.priority+":"+cur.value;
+        cur = cur.next;
+        if (cur){ str += " > "; }
+    }
     console.log(str);
-  }
-  return str;
 };
+
 
 module.exports = {
-  MPQ: Queue
+    MPQ: MPQ
 };
+
+// var q = new MPQ();
+// q.enqueue(0,5)
+// q.enqueue(1,5)
+// q.enqueue(2,3)
+// q.enqueue(3,2)
+// q.enqueue(4,Infinity)
+// q.print()
+
+// console.log(q.dequeue());
+// console.log(q.dequeue());
+// console.log(q.dequeue());
+// q.print()
+
+// q.update(4,2);
+// q.print();

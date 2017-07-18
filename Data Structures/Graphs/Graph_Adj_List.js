@@ -3,27 +3,51 @@ var q = require("../SLQ.js");
 
 function printGraph(graph){
   for (l in graph){
-    console.log(l +": " + graph[l].string());
+    graph[l].print();
   }
 }
 
+// ------------------ BFS ---------------------
+
+// array of SLLs as graph
 function BredthFirstSearch(graph, v){
-  var bfs = [];
-  bfs[v] = [0, null];
-  var queue = new q.Queue();
-  while(v || v === 0){
-    var cur = graph[v].head;
+  var visited = [];
+  visited[v] = 0;
+  var queue = new q.Queue();  
+  while(v !== null){
+    var cur = graph[v].head;    
     while(cur){
-      if (!bfs[cur.value]){
-        bfs[cur.value] = [bfs[v][0]+1, v];
+      if (visited[cur.value] === undefined){
+        visited[cur.value] = visited[v]+1;
         queue.enqueue(cur.value);
       }
       cur = cur.next;
     }
     v = queue.dequeue();
   }
-  return bfs;
+  return visited;
 }
+
+// nested array as graph
+function BredthFirstSearchII(graph, v){
+  var visited = [];
+  visited.length = graph.length;
+  visited[v] = 0;
+  var queue = new q.Queue();  
+  while(v !== null){
+    for (var i = 0; i < graph[v].length; i++){
+      var val = graph[v][i]
+      if (visited[val] === undefined){
+        visited[val] = visited[v]+1;
+        queue.enqueue(val);
+      }
+    } 
+    v = queue.dequeue();
+  }
+  return visited;
+}
+
+// ------------------ DFS ---------------------
 
 function DepthFirstSearch(graph, v){
   var bfs = [];
@@ -45,17 +69,26 @@ function DepthFirstSearch(graph, v){
   return bfs;
 }
 
-graph = [
-          new l.SLL([2,5]),
-          new l.SLL([2,3,4,5]),
-          new l.SLL([0,1,3]),
-          new l.SLL([1,2]),
-          new l.SLL([1,3]),
-          new l.SLL([0,1,6]),
-          new l.SLL([5]),
-        ];
+// graph = [
+//           new l.SLL([1,2,3], true),
+//           new l.SLL([0,4], true),
+//           new l.SLL([3], true),
+//           new l.SLL([0,2,5], true),
+//           new l.SLL([1,3], true),
+//           new l.SLL([3], true),
+//         ];
+// printGraph(graph);
+// console.log(DepthFirstSearch(graph, 2));
 
-printGraph(graph);
-console.log("root = 2");
-console.log(BredthFirstSearch(graph, 2));
-console.log(DepthFirstSearch(graph, 2));
+
+graphII = [
+          [1,2,3],
+          [0,4],
+          [3],
+          [0,2,5],
+          [1,3],
+          [3],
+        ];
+console.log(BredthFirstSearchII(graphII, 0));
+
+// printGraph(graph);

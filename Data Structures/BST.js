@@ -3,6 +3,16 @@ function btNode(val){
 	this.left = null;
 	this.right = null;
 }
+    btNode.prototype.max = function(){
+        if (!this.right && !this.left) return this.val;
+        var left = this.val;
+        var right = this.val;
+
+        if (this.left) leftMax = this.left.max(); 
+        if (this.right) rightMax = this.right.min(); 
+
+        return Math.max(left, right)
+    }
 
 	btNode.prototype.count = function(){
 		var left = 0, right = 0;
@@ -11,18 +21,48 @@ function btNode(val){
 		return 1 + left + right;
 	};
 
-	btNode.prototype.valid = function(){
-		var left = true, right = true;
-		if(this.left !== null){
+    // doesn't catch node with right child larger then its parrent
+	btNode.prototype.valid1 = function(){
+		var left = right = true;
+		if(this.left){
 			if (this.left.val > this.val){ return false; }
-			left = left && this.left.valid();
+			left = this.left.valid1();
 		}
-		if(this.right !== null){
+		if(this.right){
 			if (this.right.val < this.val){ return false; }
-			right = right && this.right.valid();
+			right = this.right.valid1();
 		}
 		return left && right;
 	};
+
+    // time inefficient
+    btNode.prototype.valid2 = function(){
+        var leftMax  = this.left  ? this.left.max()  : this.val; 
+        var rightMin = this.right ? this.right.min() : this.val; 
+
+        if (leftMax > this.val || rightMin < this.val) return false;
+        
+        var leftValid  = this.left  ? this.left.valid2()  : true;
+        var rightValid = this.right ? this.right.valid2() : true;
+
+        return leftValid && rightValid;
+	};
+
+    btNode.prototype.valid3 = function(){
+        if (!this.left && !this.right) return [true, this.val, this.val]; 
+
+        var left = right = [true, this.val, this.val]
+        if (this.left) left = this.left.valid3();
+        if (this.right) right = this.right.valid3();
+        
+        if (leftMax > this.val || rightMin < this.val) return false;
+        
+        var leftValid  = this.left  ? this.left.valid2()  : true;
+        var rightValid = this.right ? this.right.valid2() : true;
+
+        return leftValid && rightValid;
+	};
+
 
 	btNode.prototype.maxHeight = function(){
 		var L = 0, R = 0;
@@ -152,9 +192,14 @@ function BST(){
 		return this.root.count();
 	};
 
-	BST.prototype.isValid = function(){
+	// BST.prototype.isValid = function(){
+	// 	if (this.isEmpty()){ return true; }
+	// 	return this.root.valid();
+	// };
+
+    BST.prototype.isValid = function(){
 		if (this.isEmpty()){ return true; }
-		return this.root.valid();
+		
 	};
 
 	BST.prototype.remove = function (val, cur, parent) {

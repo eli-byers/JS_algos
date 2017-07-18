@@ -11,7 +11,7 @@ def numToText(num):
     numArr = []
     for part in parts:
         if part:
-            numArr += hundrenToText(part) + [suffix[count]]
+            numArr += hundrenToText(part) + [suffix[count]] + ['-']
         count -= 1
 
     return " ".join(numArr)
@@ -41,4 +41,4 @@ def hundrenToText(numStr):
 
     return numArr
 
-print numToText(34567893)
+print numToText(345678934512515)
