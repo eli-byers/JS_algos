@@ -139,63 +139,63 @@ HashMap.prototype.growAdd = function(node){
     return this;
 }
 
-// Work in Progress
+// // Work in Progress
 
-HashMap.prototype.growOld = function(){
-    let oldCap = this.capacity;
-    this.capacity *= 2;
-    for (let i = 0; i < oldCap; i++){
-        // if there is somehting in the bucket
-        if(this.table[i]){
-            // if it's not an Array - make parallell Array
-            if (this.table[i].constructor != Array){
-                this.table[i] = [this.table[i], new SLL()];
-            }
-            // now is's an array - is there a list at [0]?
-            else if (this.table[i][0]){
-                let node = this.table[i][0].popFront(true);
-                while (node){
-                    this.growAdd(node);
-                    node = this.table[i][0].popFront(true);
-                }
-            }
-        }
-    }
-    // flatten paralles Arrays
-    for (let i = 0; i < this.capacity; i++){
-        // if there is somehting in the bucket it's an array
-        if(this.table[i]){
-            // if there is not an SLL in [0], make bucket the SLL from [1]
-            if (!this.table[i][0]) {
-                this.table[i] = this.table[i][1];
-            }
-            // if there is an SLL in [0] move over nodes and count
-            else {
-                this.table[i][0].head = this.table[i][1].head;
-                this.table[i][0].length = this.table[i][1].length;
-                this.table[i] = this.table[i][0];
-            }
-        }
-    }
+// HashMap.prototype.growOld = function(){
+//     let oldCap = this.capacity;
+//     this.capacity *= 2;
+//     for (let i = 0; i < oldCap; i++){
+//         // if there is somehting in the bucket
+//         if(this.table[i]){
+//             // if it's not an Array - make parallell Array
+//             if (this.table[i].constructor != Array){
+//                 this.table[i] = [this.table[i], new SLL()];
+//             }
+//             // now is's an array - is there a list at [0]?
+//             else if (this.table[i][0]){
+//                 let node = this.table[i][0].popFront(true);
+//                 while (node){
+//                     this.growAdd(node);
+//                     node = this.table[i][0].popFront(true);
+//                 }
+//             }
+//         }
+//     }
+//     // flatten paralles Arrays
+//     for (let i = 0; i < this.capacity; i++){
+//         // if there is somehting in the bucket it's an array
+//         if(this.table[i]){
+//             // if there is not an SLL in [0], make bucket the SLL from [1]
+//             if (!this.table[i][0]) {
+//                 this.table[i] = this.table[i][1];
+//             }
+//             // if there is an SLL in [0] move over nodes and count
+//             else {
+//                 this.table[i][0].head = this.table[i][1].head;
+//                 this.table[i][0].length = this.table[i][1].length;
+//                 this.table[i] = this.table[i][0];
+//             }
+//         }
+//     }
 
-}
-HashMap.prototype.growAddOld = function(node){
-    if (node){
-        let hash = node.value[0].hashCode();
-        let idx = this.mod(hash);
-        // if there is nothing in the bucket, make Array
-        if (!this.table[idx]){
-            this.table[idx] = [undefined, new SLL()];
-        }
-        // if it's an SLL, make Array 
-        else if (this.table[idx].constructor == SLL){
-            this.table[idx] = [this.table[idx], new SLL()];
-        }
-        // it's an Array, add to new SLL
-        this.table[idx][1].pushFront(node)
-    }
-    return this;
-}
+// }
+// HashMap.prototype.growAddOld = function(node){
+//     if (node){
+//         let hash = node.value[0].hashCode();
+//         let idx = this.mod(hash);
+//         // if there is nothing in the bucket, make Array
+//         if (!this.table[idx]){
+//             this.table[idx] = [undefined, new SLL()];
+//         }
+//         // if it's an SLL, make Array 
+//         else if (this.table[idx].constructor == SLL){
+//             this.table[idx] = [this.table[idx], new SLL()];
+//         }
+//         // it's an Array, add to new SLL
+//         this.table[idx][1].pushFront(node)
+//     }
+//     return this;
+// }
 
 // check for [undefined, SLL] case in first loop
 

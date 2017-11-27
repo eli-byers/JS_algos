@@ -32,13 +32,13 @@ function BredthFirstSearch(graph, v){
 function BredthFirstSearchII(graph, v){
   var visited = [];
   visited.length = graph.length;
-  visited[v] = 0;
+  visited[v] = [0,v];
   var queue = new q.Queue();  
   while(v !== null){
     for (var i = 0; i < graph[v].length; i++){
       var val = graph[v][i]
       if (visited[val] === undefined){
-        visited[val] = visited[v]+1;
+        visited[val] = [visited[v][0]+1,v];
         queue.enqueue(val);
       }
     } 
@@ -49,36 +49,37 @@ function BredthFirstSearchII(graph, v){
 
 // ------------------ DFS ---------------------
 
+
 function DepthFirstSearch(graph, v){
-  var bfs = [];
-  bfs[v] = [0, null];
+  var ret = [];
+  ret[v] = [0, null];
   var stack = [];
   while(v || v === 0){
     var cur = graph[v].head;
     while(cur){
-      if (!bfs[cur.value]){
-        bfs[cur.value] = [bfs[v][0]+1, v];
+      if (!ret[cur.value]){
+        ret[cur.value] = [ret[v][0]+1, v];
         stack.push(cur.value);
-      } else if (bfs[cur.value][0] > bfs[v][0]+1){
-        bfs[cur.value] = [bfs[v][0]+1,v];
+      } else if (ret[cur.value][0] > ret[v][0]+1){
+        ret[cur.value] = [ret[v][0]+1,v];
       }
       cur = cur.next;
     }
     v = stack.pop();
   }
-  return bfs;
+  return ret;
 }
 
-// graph = [
-//           new l.SLL([1,2,3], true),
-//           new l.SLL([0,4], true),
-//           new l.SLL([3], true),
-//           new l.SLL([0,2,5], true),
-//           new l.SLL([1,3], true),
-//           new l.SLL([3], true),
-//         ];
+graph = [
+          new l.SLL([1,2,3], true),
+          new l.SLL([0,4], true),
+          new l.SLL([3], true),
+          new l.SLL([0,2,5], true),
+          new l.SLL([1,3], true),
+          new l.SLL([3], true),
+        ];
 // printGraph(graph);
-// console.log(DepthFirstSearch(graph, 2));
+// console.log(DepthFirstSearch(graph, 0));
 
 
 graphII = [

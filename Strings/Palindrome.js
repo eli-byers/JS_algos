@@ -70,8 +70,5 @@ function longestPalindrome(str){
   return ret;
 }
 
-str = "racecars lol aceca asdfasdfasdfasdf";
-console.log(isPalindrome(str));         // false
-console.log(isPalindrome(str, 0, 6));   // true
-console.log(isPalindrome(str, 9, 11));  // true
-console.log(longestPalindrome(str));    // racecar
+str = "lolasdfl racecar lol aceca asdfasdfasdfasdf";
+console.log(longestPalindrome(str));    // l racecar l

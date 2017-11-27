@@ -14,7 +14,6 @@ TrieNode.prototype.addChild = function(value){
     return newNode;
 }
 TrieNode.prototype.insert = function(str, idx){
-    if (str == "") return false;
     if (idx === undefined) idx = 0;
     var nextNode = null;
     if (this.children.length === 0){
@@ -34,6 +33,8 @@ TrieNode.prototype.insert = function(str, idx){
         else return nextNode.isWord = true;
     }
 }
+
+
 
 // ------------   ListWordsStartingFrom   -----------------
 TrieNode.prototype.findNode = function(str, idx){    
@@ -98,14 +99,16 @@ Trie.prototype.ListWordsStartingFrom = function(str){
 
 
 
+// var words = "cold"
 var words = ["cold", "coin", "catch", "call", "care", "bob", "bobbers", "bear"]
 var trie = new Trie();
 trie.insert(words);
-words_from_bo = trie.ListWordsStartingFrom("bo");
-words_from_c = trie.ListWordsStartingFrom("c");
-words_from_ca = trie.ListWordsStartingFrom("ca");
-words_from_co = trie.ListWordsStartingFrom("co");
-console.log(words_from_bo);
-console.log(words_from_c);
-console.log(words_from_ca);
-console.log(words_from_co);
+// console.log(trie.root.children[0].children[0].children[0]);
+// words_from_bo = trie.ListWordsStartingFrom("bo");
+// words_from_c = trie.ListWordsStartingFrom("c");
+// words_from_ca = trie.ListWordsStartingFrom("ca");
+// words_from_co = trie.ListWordsStartingFrom("co");
+// console.log(words_from_bo);
+// console.log(words_from_c);
+// console.log(words_from_ca);
+// console.log(words_from_co);

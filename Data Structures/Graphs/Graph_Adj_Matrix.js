@@ -3,7 +3,7 @@ var q = require('../MPQ.js');
 function printGraph(graph){
   str = "  ";
   ln = "  ";
-  for (var l in graph){
+  for (var l in graph){0-p
     str += " "+l;
     ln += "__";
   }
@@ -19,10 +19,9 @@ function printGraph(graph){
 }
 
 function Dijkstra(graph, virt){
-  if (virt >= graph.length) return null;
+  if (virt >= graph.length || virt < 0) return null;
   var mpq = new q.MPQ(), ret = [];
-  // fill out unvisited and return arrays,
-  // there are other ways to do this with less code but this is efficient
+  // fill out unvisited queue and return array
   for (var vrt = 0; vrt < graph.length; vrt++){
     if (vrt !== virt) mpq.enqueue(vrt, Infinity);
     ret.push([Infinity, null]);
@@ -35,7 +34,7 @@ function Dijkstra(graph, virt){
     // distance from root of current virtex
     // DFR = Distance From Root
     var DFR = ret[virt][0];
-    // cur = Current Node
+    // cur = Current virtex
     var cur = graph[virt];
     // for each possible edge of current virtex
     for (var n = 0; n < cur.length; n++){
@@ -62,13 +61,14 @@ function Dijkstra(graph, virt){
 }
 
 adjMatrix = [ // 0  1  2  3  4  5
-        /* 0 */[ 0, 4, 3,-1,-1,-1],
-        /* 1 */[-1, 0, 2, 5, 1,-1],
-        /* 2 */[-1,-1, 0, 2,-1,-1],
-        /* 3 */[-1,-1,-1, 0, 1, 4],
-        /* 4 */[-1,-1,-1,-1, 0,-1],
-        /* 5 */[-1,-1,-1,-1,-1, 0],
+        /* 0 */[ 0,-1,-1,15,-1,70,45],
+        /* 1 */[-1, 0,10,-1,10,-1,-1],
+        /* 2 */[-1,10, 0,80,-1,-1,-1],
+        /* 3 */[15,-1,80, 0,20,-1,-1],
+        /* 4 */[-1,10,-1,20, 0,-1,-1],
+        /* 5 */[70,-1,-1,-1,-1, 0, 5],
+        /* 6 */[45,-1,-1,-1,-1, 5, 0],
         ];
 
 printGraph(adjMatrix);
-console.log(Dijkstra(adjMatrix, 1));
+console.log(Dijkstra(adjMatrix, 2));

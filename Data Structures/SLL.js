@@ -3,7 +3,6 @@ function SLNode(val) {
 	this.next = null;
 }
 
-
 function SLL(val, isArray){
 	this.head = null;
 	this.tail = null;
@@ -262,6 +261,27 @@ SLL.prototype.print = function (callback, end) {
 	return this;
 };
 
+SLL.prototype.partition = function(val){
+	let larger = new SLL(), 
+		smaller = new SLL(), 
+		equal = new SLL();
+
+	let cur = this.popFront(true);
+	while (cur){
+		if (cur.value < val) smaller.pushFront(cur);
+		else if (cur.value > val) larger.pushFront(cur);
+		else equal.pushFront(cur);
+
+		cur = this.popFront(true);
+	}
+
+	smaller.concat(equal).concat(larger);
+	this.head = smaller.head;
+	this.count = smaller.count;
+
+	return this;
+};
+
 
 module.exports = {
 	SLL: SLL,
@@ -273,15 +293,17 @@ module.exports = {
 // Test
 //=============================================================
 
-// var list = new SLL();
+var list = new SLL();
 // var list2 = new SLL();
-// list2.pushArr(['one', 'two','three']);
+list.push([4,7,3,8,2,9,1,5,6], isArray=true);
 // // // console.log(list.constructor);
+list.partition(6);
+list.print();
+console.log(list.count)
 
 
 // list.push("Bob").push("Tim").push([1,2]).pushArr(["cat","dog"])
 // console.log( list.count == list.length());
-// list.print();
 // list.concat(list2);
 // list.print();
 
