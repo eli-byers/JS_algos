@@ -107,20 +107,22 @@ HashMap.prototype.metaData = function(){
     console.log('optimal:', optimal, '  max:', max, '  overOpt:', overOpt);
 }
 
-HashMap.prototype.grow = function(){
-    let hook = new SLL();
-    for (let i = 0; i < this.table.length; i++){
-        let list = this.table[i];
-        if(list && !list.isEmpty()){
-            hook.concat(list);
+HashMap.prototype.grow = function(size){
+    if (size != this.capacity){
+        let hook = new SLL();
+        for (let i = 0; i < this.table.length; i++){
+            let list = this.table[i];
+            if(list && !list.isEmpty()){
+                hook.concat(list);
+            }
+            this.table[i] = undefined;
         }
-        this.table[i] = undefined;
-    }
-    this.capacity *= 2;
-    let node = hook.popFront(true);
-    while (node){
-        this.growAdd(node);
-        node = hook.popFront(true);
+        this.capacity = size ? size : this.capacity * 2;
+        let node = hook.popFront(true);
+        while (node){
+            this.growAdd(node);
+            node = hook.popFront(true);
+        }
     }
     return this;
 }
@@ -222,8 +224,3 @@ for (let i = 0; i < 6; i++){
     map.print();
     console.log("--------------------------------------------------------");
 }
-
-
-console.log(map.capacity);
-
-console.log(map.keys().length, Object.keys(dict).length);
