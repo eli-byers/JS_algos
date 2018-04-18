@@ -23,7 +23,7 @@ def hundrenToText(numStr):
 
     nums = [int(x) for x in str(numStr)]
 
-    numbers = ['', 'one', 'two', 'three', 'four', 'five', 'six', 'seven','eight','nine']
+    numbers = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven','eight','nine']
     tens = ['','','twenty','thirty', 'fourty','fifty', 'sixty','seventy', 'eighty','ninety']
     teens = ['ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen','seventeen','eighteen','ninteen']
 

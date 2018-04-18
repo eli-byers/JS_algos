@@ -2,7 +2,7 @@
 function binarySearch(arr, val, start, end){
 
 	// init
-	if (start === undefined) { start = 0; end = arr.length-1; }
+	if (start === undefined) { start; end = arr.length-1; }
 	console.log(start, end);
 	// base case
 	if (start > end ) return false;

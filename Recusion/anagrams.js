@@ -1,6 +1,4 @@
-function anagrams(str, anStr, arr){
-	// init
-	if (!arr){ arr = []; anStr = ""; }
+function anagrams(str, anStr = "", arr = []){
 	// basecase
 	if (str.length === 0) arr.push(anStr);
 	// recursive calls
