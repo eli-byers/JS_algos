@@ -1,11 +1,16 @@
+
+function getDigit(n, mask){
+	return Math.floor((n % mask) / (mask / 10));
+}
+
 function RadixSort(arr, n, mask){
-  var max;
-  if (n === 0){ return arr; }
-  if (n === undefined){ max = arr[0]; mask = 10; }
+	var max;
+	if (n === 0){ return arr; }
+	if (n === undefined){ max = arr[0]; mask = 10; }
 
 	var buckets = [0,0,0,0,0,0,0,0,0,0];
 	for (var i in arr){
-		var digit = Math.floor((arr[i] % mask) / (mask / 10));
+		var digit = getDigit(arr[i], mask);
 		buckets[digit]++;
 		// calc max
 		if (n === undefined && arr[i] > max){ max = arr[i]; }
@@ -23,13 +28,13 @@ function sortArr(arr, buckets, mask){
 	}
 	var ret = [];
 	for (var i = arr.length-1; i >= 0; i--){
-		var digit = Math.floor((arr[i] % mask) / (mask / 10));
+		var digit = getDigit(arr[i], mask);
 		ret[--buckets[digit]] = arr[i];
 	}
 	return ret;
 }
 
-var arr = [53,55,15,29,26,60,67,44,15];
+var arr = [53,255,15,29,26,160,67,44,115];
 
 // console.time("runTime");
 arr = RadixSort(arr);

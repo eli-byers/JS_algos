@@ -4,9 +4,9 @@ function MPQNode(value, priority) {
     this.next = null;
 }
 
-MPQNode.prototype.enqueue = function(node){
-    if (this.next){
-        if (node.priority < this.next.priority){
+MPQNode.prototype.enqueue = function (node) {
+    if (this.next) {
+        if (node.priority < this.next.priority) {
             node.next = this.next;
             this.next = node;
         } else this.next.enqueue(node);
@@ -15,19 +15,19 @@ MPQNode.prototype.enqueue = function(node){
 
 // ======================  Queue  =========================
 
-function MPQ(){
-  this.head = null;
+function MPQ() {
+    this.head = null;
 }
 
-MPQ.prototype.update = function(value, priority){
+MPQ.prototype.update = function (value, priority) {
     found = false;
-    if (this.head.value == value){
+    if (this.head.value == value) {
         this.head = this.head.next;
         found = true;
     } else {
         var current = this.head;
-        while(current.next){
-            if (value == current.next.value){
+        while (current.next) {
+            if (value == current.next.value) {
                 current.next = current.next.next;
                 found = true;
                 break
@@ -38,10 +38,10 @@ MPQ.prototype.update = function(value, priority){
     if (found) this.enqueue(value, priority);
 }
 
-MPQ.prototype.enqueue = function(virt, priority){
+MPQ.prototype.enqueue = function (virt, priority) {
     var node = new MPQNode(virt, priority);
-    if (this.head){
-        if (priority < this.head.priority){
+    if (this.head) {
+        if (priority < this.head.priority) {
             node.next = this.head;
             this.head = node;
         } else this.head.enqueue(node);
@@ -49,11 +49,11 @@ MPQ.prototype.enqueue = function(virt, priority){
     return this;
 };
 
-MPQ.prototype.dequeue = function(){
+MPQ.prototype.dequeue = function () {
     var node = this.head;
-    if (node){
+    if (node) {
         node = {
-            value: this.head.value, 
+            value: this.head.value,
             priority: this.head.priority
         };
         this.head = this.head.next;
@@ -61,13 +61,13 @@ MPQ.prototype.dequeue = function(){
     return node;
 };
 
-MPQ.prototype.print = function(){
+MPQ.prototype.print = function () {
     var cur = this.head;
     var str = "";
-    while(cur) {
-        str += cur.priority+":"+cur.value;
+    while (cur) {
+        str += cur.priority + ":" + cur.value;
         cur = cur.next;
-        if (cur){ str += " > "; }
+        if (cur) { str += " > "; }
     }
     console.log(str);
 };
